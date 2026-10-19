@@ -456,8 +456,6 @@ with dependencies:
         if column not in evidence_df.columns:
             evidence_df[column] = ""
     evidence_df = evidence_df[evidence_columns]
-    # Keep evidence-register fields as text, including blank CSV values.
-evidence_df = evidence_df.fillna("").astype(str)
 
     if evidence_df.empty:
         evidence_df = pd.DataFrame(
@@ -511,9 +509,11 @@ evidence_df = evidence_df.fillna("").astype(str)
             columns=evidence_columns,
         )
 
-    evidence_df["Publication date"] = (
-    evidence_df["Publication date"].fillna("").astype(str)
-)
+    # Normalize all evidence-register cell values after loading or creating
+    # starter rows. This prevents blank CSV fields being inferred as floats
+    # when Streamlit expects editable text columns.
+    evidence_df = evidence_df.fillna("").astype(str)
+
     edited_evidence_df = st.data_editor(
         evidence_df,
         use_container_width=True,

@@ -456,6 +456,8 @@ with dependencies:
         if column not in evidence_df.columns:
             evidence_df[column] = ""
     evidence_df = evidence_df[evidence_columns]
+    # Keep evidence-register fields as text, including blank CSV values.
+evidence_df = evidence_df.fillna("").astype(str)
 
     if evidence_df.empty:
         evidence_df = pd.DataFrame(

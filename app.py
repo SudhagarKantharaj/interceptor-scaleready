@@ -509,6 +509,9 @@ with dependencies:
             columns=evidence_columns,
         )
 
+    evidence_df["Publication date"] = (
+    evidence_df["Publication date"].fillna("").astype(str)
+)
     edited_evidence_df = st.data_editor(
         evidence_df,
         use_container_width=True,
